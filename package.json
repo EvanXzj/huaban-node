@@ -7,6 +7,13 @@
     "format": "prettier --write lib/**/*.js bin/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "lib",
+    "bin"
+  ],
+  "bin": {
+    "huaban": "bin/huaban"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EvanXzj/huan-node.git"

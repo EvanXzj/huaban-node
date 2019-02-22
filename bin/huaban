@@ -15,11 +15,10 @@ const argv = minimist(process.argv.slice(2), {
   },
 })
 
-console.log(argv, process.argv)
-const exampleUrl = 'http://huaban.com/boards/17324249/'
+const exampleUrl = 'http://huaban.com/kfyobazwag/'
 if (process.argv.length === 2 || argv.help) {
   console.log(`
-  huaban board downloader v${pkgVersion}
+  huaban all boards downloader v${pkgVersion}
 
     Usage:
       huaban [options] <board_url>
