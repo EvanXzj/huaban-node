@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+const minimist = require('minimist')
+const HuabanBoard = require('../lib')
+const pkgVersion = require('../package').version
+
+const argv = minimist(process.argv.slice(2), {
+  boolean: ['help'],
+  alias: {
+    h: ['help'],
+    c: ['concurrency'],
+  },
+  default: {
+    concurrency: 10,
+  },
+})
+
+console.log(argv, process.argv)
+const exampleUrl = 'http://huaban.com/boards/17324249/'
+if (process.argv.length === 2 || argv.help) {
+  console.log(`
+  huaban board downloader v${pkgVersion}
+
+    Usage:
+      huaban [options] <board_url>
+
+    Options:
+      -h,--help         输出此帮助信息
+      -c,--concurrency  同时最大下载数量,默认10
+
+    Example:
+      huaban -c 10 ${exampleUrl}
+  `)
+  process.exit()
+}
+
+async function main() {
+  const url = argv._[0]
+  const concurrency = argv.concurrency
+
+  const huabanBoard = new HuabanBoard(url, {concurrency})
+  await huabanBoard.download()
+}
+
+main()
