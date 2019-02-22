@@ -41,4 +41,9 @@ async function main() {
   await huabanBoard.download()
 }
 
+process.on('unhandledRejection', error => {
+  console.log('Error ', error.message)
+  process.exit()
+})
+
 main()
