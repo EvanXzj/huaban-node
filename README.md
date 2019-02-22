@@ -24,3 +24,7 @@ $ huaban
     Example:
       huaban  -c 10 http://huaban.com/kfyobazwag/
 ```
+## TODO
+
+1. 更多参数选项
+2. 提示Spinner
