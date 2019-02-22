@@ -1,6 +1,6 @@
 {
   "name": "@chuidylan/huaban-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -18,7 +18,12 @@
     "type": "git",
     "url": "git+https://github.com/EvanXzj/huan-node.git"
   },
-  "keywords": [],
+  "keywords": [
+    "huaban",
+    "downloader",
+    "huaban-node",
+    "node-huaban"
+  ],
   "author": "chuidylan <chuidylan@gmail.com> (blog.chuidylan.com)",
   "license": "MIT",
   "bugs": {

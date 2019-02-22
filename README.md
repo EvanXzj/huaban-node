@@ -8,7 +8,7 @@
 npm install @chuidylan/huaban-node -g
 ```
 
-##
+## 使用
 
 ```
 $ huaban
