@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "format": "prettier --write lib/**/*.js bin/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mac-pack": "npx pkg --out-path ./pkg/mac --target latest-macos-x64 ./bin/huaban",
+    "win-pack": "npx pkg --out-path ./pkg/win --target latest-win-x64 ./bin/huaban"
   },
   "files": [
     "lib",
