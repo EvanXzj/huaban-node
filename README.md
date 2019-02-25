@@ -31,3 +31,7 @@ $ huaban
 2. 提示Spinner
 3. 解决内存占用太多问题
 4. 解决下载完成不自动退出问题
+5. ENOENT: no such file or directory, mkdir '/Users/admin/huaban/xxx'
+6. 重试机制
+7. 已下载的图片检测
+8. 画板图片下载不全
