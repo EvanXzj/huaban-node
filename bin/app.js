@@ -9,7 +9,12 @@ const mime = require('mime')
 const async = require('async')
 const {Spinner} = require('clui')
 
-const {askDownloadType, askSingleBoardId, askUserName, askImageStorePath} = require('../lib/inquirer')
+const {
+  askDownloadType,
+  askSingleBoardId,
+  askUserName,
+  askImageStorePath,
+} = require('../lib/inquirer')
 
 let totalDownload = 0
 const huabanDomain = 'https://huaban.com'
@@ -33,7 +38,9 @@ clear()
 
 // print cli name
 // console.log()
-console.log(chalk.yellow(figlet.textSync('Huaban Downloader', {horizontalLayout: 'full'})))
+console.log(
+  chalk.yellow(figlet.textSync('Huaban Downloader', {horizontalLayout: 'full'}))
+)
 
 const main = async () => {
   try {
@@ -102,7 +109,7 @@ async function downloadBoardsOfUser(username, savePath) {
       '\n开始下载画板：[%s - %s]，图片数量：%d',
       board.board_id,
       board.title,
-      board.pin_count,
+      board.pin_count
     )
     await getPinsAndDownload(board, savePath)
   }
@@ -153,7 +160,12 @@ async function getUserBoards(username) {
 const downloadSingleBoard = async (boardId, savePath) => {
   console.time('Total time')
   const board = await getBoardInfo(boardId)
-  console.log('\n开始下载画板 %s - %s，图片数量：%d', boardId, board.title, board.pin_count)
+  console.log(
+    '\n开始下载画板 %s - %s，图片数量：%d',
+    boardId,
+    board.title,
+    board.pin_count
+  )
 
   await getPinsAndDownload(board, savePath)
   console.log('\n\x1b[32m✅ All Done!\x1b[0m')
@@ -164,7 +176,7 @@ const downloadSingleBoard = async (boardId, savePath) => {
   process.exit(0)
 }
 
-const getBoardInfo = async (boardId) => {
+const getBoardInfo = async boardId => {
   const response = await rp({
     uri: `${huabanDomain}/boards/${boardId}/`,
     headers: jsonRequestHeader,
@@ -194,8 +206,10 @@ async function getPinsAndDownload(board, savePath) {
 
   spinner.stop()
   console.log(
-    `Done. 成功 %d 个${failedCount ? `，失败 \x1b[31m${failedCount}\x1b[0m个` : ''}`,
-    downloadCount,
+    `Done. 成功 %d 个${
+      failedCount ? `，失败 \x1b[31m${failedCount}\x1b[0m个` : ''
+    }`,
+    downloadCount
   )
 }
 
@@ -204,7 +218,6 @@ async function getPins(boardId) {
   const allPins = []
 
   async function loadPins(lastPinId = '') {
-
     // limit 查询参数限制获取的pin数量，最大100，默认20
     const response = await rp({
       uri: `${huabanDomain}/boards/${boardId}/`,
@@ -213,7 +226,7 @@ async function getPins(boardId) {
         max: lastPinId,
       },
       headers: jsonRequestHeader,
-      json: true
+      json: true,
     })
 
     const board = response.board
@@ -243,42 +256,53 @@ async function downloadImage(pins, boardPath) {
         uri: image.url,
         timeout: 20 * 1000,
         encoding: null, // make response a Buffer to write image correctly
-      }).pipe(
-        fs.createWriteStream(image.path).on('finish', () => {
-          downloadCount++
-          errorImageUrl.splice(index, 1)
-          console.log('\x1b[32m Retry ok! \x1b[0m %s', image.url)
-        })
-      ).catch(err => {
-        console.log(err)
       })
+        .pipe(
+          fs.createWriteStream(image.path).on('finish', () => {
+            downloadCount++
+            errorImageUrl.splice(index, 1)
+            console.log('\x1b[32m Retry ok! \x1b[0m %s', image.url)
+          })
+        )
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 
   function download(pin, cb) {
-    const imageUrl  = `http://${imgHosts[pin.file.bucket]}/${pin.file.key}_fw658`
-    const imageName  = `${pin.pin_id}.${mime.getExtension(pin.file.type) || 'jpg'}`
+    const imageUrl = `http://${imgHosts[pin.file.bucket]}/${pin.file.key}_fw658`
+    const imageName = `${pin.pin_id}.${mime.getExtension(pin.file.type) ||
+      'jpg'}`
 
     rp({
       uri: imageUrl,
       timeout: 20 * 1000,
       encoding: null, // make response a Buffer to write image correctly
-    }).then(data => {
-      downloadCount++
+    })
+      .then(data => {
+        downloadCount++
 
-      fs.writeFile(`${boardPath}/${imageName}`, data, error => {
-        error && console.error('\x1b[31m%s\x1b[0m%s', error.message, imageUrl)
+        fs.writeFile(`${boardPath}/${imageName}`, data, error => {
+          error && console.error('\x1b[31m%s\x1b[0m%s', error.message, imageUrl)
+        })
       })
-    }).catch(error => {
-      console.error('\x1b[31m%s %s.\x1b[0m %s', 'Download image failed.', error.message, imageUrl)
-      errorImageUrl.push({ url: imageUrl, path: `${boardPath}/${imageName}` })
-    }).finally(cb)
+      .catch(error => {
+        console.error(
+          '\x1b[31m%s %s.\x1b[0m %s',
+          'Download image failed.',
+          error.message,
+          imageUrl
+        )
+        errorImageUrl.push({url: imageUrl, path: `${boardPath}/${imageName}`})
+      })
+      .finally(cb)
   }
 
   // async控制并发下载数，否则并发数太高Node会失去响应
   return new Promise(resolve => {
     // 同一时间最多有10个(不能太高)并发请求
-    async.eachLimit(pins, 10, download, async (error) => {
+    async.eachLimit(pins, 10, download, async error => {
       if (error) {
         throw error
       }
