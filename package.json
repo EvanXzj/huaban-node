@@ -2,11 +2,11 @@
   "name": "@chuidylan/huaban-node",
   "version": "1.0.4",
   "description": "huaban all user boards downloader",
-  "main": "lib/index.js",
+  "main": "bin/app.js",
   "scripts": {
     "format": "prettier --write lib/**/*.js bin/*",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mac-pack": "npx pkg --out-path ./pkg/mac --target latest-macos-x64 ./bin/huaban",
+    "mac-pack": "npx pkg --out-path ./pkg/mac --target latest-macos-x64 .",
     "win-pack": "npx pkg --out-path ./pkg/win --target latest-win-x64 ./bin/huaban"
   },
   "files": [
@@ -14,7 +14,7 @@
     "bin"
   ],
   "bin": {
-    "huaban": "bin/huaban"
+    "huaban": "bin/app.js"
   },
   "repository": {
     "type": "git",
@@ -55,5 +55,9 @@
     "hooks": {
       "pre-commit": "npm run format && git add ."
     }
+  },
+  "pkg": {
+    "scripts": [],
+    "assets": ["./node_modules/figlet/fonts/**/*"]
   }
 }
