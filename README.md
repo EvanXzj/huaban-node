@@ -10,28 +10,14 @@ npm install @chuidylan/huaban-node -g
 
 ## 使用
 
-```
+```sh
+# 根据提示输入信息即可
 $ huaban
-  huaban board downloader v0.0.1
-
-    Usage:
-      huaban [options] <board_url>
-
-    Options:
-      -h,--help         输出此帮助信息
-      -c,--concurrency  同时最大下载数量,默认10
-
-    Example:
-      huaban  -c 10 http://huaban.com/kfyobazwag/
 ```
 
 ## TODO
 
-1. 更多参数选项，如：画板总数量
-2. 提示Spinner
-3. 解决内存占用太多问题
-4. 解决下载完成不自动退出问题
-5. ENOENT: no such file or directory, mkdir '/Users/admin/huaban/xxx'
-6. 重试机制
-7. 已下载的图片检测
-8. 画板图片下载不全
+1. 解决内存占用太多问题
+2. 优化控制台的信息输出，计数不准确问题
+3. 重试机制
+4. 代码重构

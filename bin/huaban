@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const _ = require('lodash')
 const path = require('path')
 const chalk = require('chalk')
@@ -251,22 +253,18 @@ async function downloadImage(pins, boardPath) {
 
   // 重试下载失败的图片
   function retry() {
-    for (const [image, index] of errorImageUrl) {
+    for (const [index, image] of errorImageUrl.entries()) {
       rp({
         uri: image.url,
         timeout: 20 * 1000,
         encoding: null, // make response a Buffer to write image correctly
-      })
-        .pipe(
-          fs.createWriteStream(image.path).on('finish', () => {
-            downloadCount++
-            errorImageUrl.splice(index, 1)
-            console.log('\x1b[32m Retry ok! \x1b[0m %s', image.url)
-          })
-        )
-        .catch(err => {
-          console.log(err)
+      }).pipe(
+        fs.createWriteStream(image.path).on('finish', () => {
+          downloadCount++
+          errorImageUrl.splice(index, 1)
+          console.log('\x1b[32m Retry ok! \x1b[0m %s', image.url)
         })
+      )
     }
   }
 
@@ -302,7 +300,7 @@ async function downloadImage(pins, boardPath) {
   // async控制并发下载数，否则并发数太高Node会失去响应
   return new Promise(resolve => {
     // 同一时间最多有10个(不能太高)并发请求
-    async.eachLimit(pins, 10, download, async error => {
+    async.eachLimit(pins, 10, download, error => {
       if (error) {
         throw error
       }
