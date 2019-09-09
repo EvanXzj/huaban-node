@@ -21,3 +21,9 @@ $ huaban
 2. 优化控制台的信息输出，计数不准确问题
 3. 重试机制
 4. 代码重构
+
+## 其他
+
+git@github.com:magicdawn/node-huaban.git
+
+https://github.com/Jancat/huaban-crawl.git
